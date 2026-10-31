@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Reduce la paleta de tus imágenes, añade una cuadrícula y explora sus colores. Funciona sin conexión.">
+<title>Estudio de color</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23242427'/%3E%3Cpath fill='%238aaef8' d='M6 6h9v9H6z'/%3E%3Cpath fill='%23f5f5f5' d='M17 6h9v9h-9z'/%3E%3Cpath fill='%234d70b7' d='M6 17h9v9H6z'/%3E%3Cpath fill='%23b5c9f1' d='M17 17h9v9h-9z'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;--ink:#242427;--muted:#6a6a73;--line:#e3e3e7;--accent:#285bc8;--pale:#edf2fd;--radius:14px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:#f1f1f3;color:var(--ink)}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.42}button,input{outline-offset:3px}button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #92b3f8}button{color:inherit}svg{display:block;flex-shrink:0}button svg{width:18px;height:18px}.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column}.topbar{height:68px;flex-shrink:0;display:flex;align-items:center;gap:24px;padding:0 22px;background:#fff;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px;white-space:nowrap}.brand-icon{display:grid;grid-template-columns:repeat(2,9px);gap:3px;padding:8px;background:#242427;border-radius:10px}.brand-icon i{width:9px;height:9px;background:#8aaef8}.brand-icon i:nth-child(2){background:#f5f5f5}.brand-icon i:nth-child(3){background:#4d70b7}.brand-icon i:nth-child(4){background:#b5c9f1}h1{font-size:20px;letter-spacing:-.6px;margin:0;font-weight:650}.file-meta{display:flex;gap:10px;align-items:center;min-width:0;flex:1;color:var(--muted);font-size:13px}.file-name{max-width:34vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dimensions{white-space:nowrap;font-variant-numeric:tabular-nums}.local{font-size:12px;color:var(--muted);white-space:nowrap;display:flex;gap:6px;align-items:center}
+.workspace{flex:1;min-height:0;display:grid;grid-template-columns:254px minmax(0,1fr) 266px;gap:14px;padding:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);min-width:0;min-height:0}.editor,.explorer{padding:19px;display:flex;flex-direction:column;gap:17px;overflow:hidden}h2{font-size:17px;letter-spacing:-.35px;margin:0;font-weight:650}h3{font-size:14px;margin:0;font-weight:650}.panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px}.eyebrow{font-size:11px;font-weight:650;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin:0 0 4px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 12px;font-weight:550;line-height:1.2}.btn:hover:not(:disabled){background:#f5f5f7;border-color:#c7c7d0}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.primary:hover:not(:disabled){background:#1b49ab}.btn.soft{background:#f5f5f7}.btn.text{border:0;background:none;font-weight:500;min-height:30px;color:var(--muted);padding:5px}.btn.text:hover:not(:disabled){color:var(--ink);background:#f5f5f7}.open-btn{width:100%}.control-section{padding-top:17px;border-top:1px solid var(--line)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}.toggle{display:flex;gap:10px;align-items:center;cursor:pointer;font-size:14px;font-weight:650}.toggle input{appearance:none;-webkit-appearance:none;flex-shrink:0;width:32px;height:19px;border-radius:20px;background:#d4d4db;position:relative;cursor:pointer;margin:0;transition:background .16s}.toggle input:after{content:"";position:absolute;top:3px;left:3px;width:13px;height:13px;background:white;border-radius:50%;box-shadow:0 1px 3px #0002;transition:transform .16s}.toggle input:checked{background:var(--accent)}.toggle input:checked:after{transform:translateX(13px)}.toggle input:disabled{opacity:.45;cursor:default}fieldset{border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:12px}fieldset:disabled{opacity:.42}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row label,.field label{font-size:14px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.number{height:34px;width:60px;border:1px solid #d9d9e0;border-radius:7px;background:#fafafa;text-align:center;padding:4px;color:var(--ink);font-variant-numeric:tabular-nums}.two .number{width:100%;text-align:left;padding:6px 10px}.range{width:100%;height:18px;margin:0;accent-color:var(--accent);cursor:pointer}.range:disabled{cursor:default}.presets{display:flex;gap:5px}.presets button{flex:1;height:29px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:13px}.presets button[aria-pressed=true]{background:var(--pale);border-color:#a8beee;color:#234ba0}.hint{margin:0;color:var(--muted);font-size:12px;line-height:1.45}.palette{display:flex;height:23px;border-radius:5px;overflow:hidden;border:1px solid #00000008}.palette button{padding:0;min-width:0;flex:1;border:0;background:var(--color);position:relative}.palette button:focus-visible{outline-offset:-3px;z-index:2}.palette:empty{display:none}.color-row{display:flex;align-items:center;border:1px solid #d9d9e0;border-radius:7px;height:36px;gap:7px;padding:4px 7px}.color-input{appearance:none;-webkit-appearance:none;width:29px;height:25px;border:0;padding:0;background:transparent;cursor:pointer}.color-input::-webkit-color-swatch-wrapper{padding:0}.color-input::-webkit-color-swatch{border:0;border-radius:4px}.color-input::-moz-color-swatch{border:0;border-radius:4px}.hex-input{width:100%;min-width:0;border:0;outline:0;background:transparent;text-transform:uppercase;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:var(--ink)}.unit{font-size:12px;color:var(--muted);white-space:nowrap}.editor-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:11px;text-align:center}.control-tabs.segmented{display:none}.group-grid{gap:11px}
+.image-panel{display:flex;flex-direction:column;overflow:hidden;background:#e7e7ea;border-color:#dcdce1}.image-toolbar{height:55px;flex-shrink:0;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fafafa;border-bottom:1px solid #dedee3}.segmented{display:flex;background:#eaeaec;border-radius:7px;padding:3px;gap:3px}.segmented button{border:0;background:transparent;min-height:29px;padding:5px 12px;border-radius:5px;font-size:13px;color:#686871}.segmented button[aria-pressed=true]{background:#fff;color:var(--ink);box-shadow:0 1px 3px #00000013;font-weight:600}.fit-label{font-size:12px;color:var(--muted);white-space:nowrap}.stage{position:relative;flex:1;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;padding:25px;overflow:hidden}.stage.drag{box-shadow:inset 0 0 0 3px var(--accent);background:#dde5f7}.image-wrap{position:relative;flex-shrink:0;box-shadow:0 4px 24px #00000016;background-color:#fff;background-image:linear-gradient(45deg,#ededed 25%,transparent 25%),linear-gradient(-45deg,#ededed 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ededed 75%),linear-gradient(-45deg,transparent 75%,#ededed 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0}.image-wrap[hidden]{display:none}.image-wrap canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}.grid-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.sample-mark{width:15px;height:15px;position:absolute;transform:translate(-50%,-50%);border:2px solid #fff;outline:1px solid #111;border-radius:50%;box-shadow:0 0 0 4px #0002;pointer-events:none}.sample-mark[hidden]{display:none}.image-footer{height:37px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border-top:1px solid #d9d9df;color:#6a6a73;background:#fafafa;font-size:12px}.image-footer span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.empty{text-align:center;color:var(--muted);max-width:295px;display:flex;align-items:center;flex-direction:column;gap:15px}.empty[hidden]{display:none}.empty-symbol{border:1px dashed #acacb8;border-radius:18px;width:78px;height:78px;display:flex;align-items:center;justify-content:center;background:#f1f1f4}.empty-symbol svg{width:32px;height:32px;stroke:#7d7d88}.empty h2{font-size:20px;color:#41414a;font-weight:600;letter-spacing:-.5px}.empty p{font-size:14px;line-height:1.55;margin:0}.empty .hint{font-size:12px}.busy{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);width:min(330px,calc(100% - 28px));padding:12px 15px;background:#ffffffee;border:1px solid #d1d5df;border-radius:10px;box-shadow:0 4px 18px #0001;backdrop-filter:blur(8px);font-size:13px}.busy[hidden]{display:none}.busy-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.busy progress{width:100%;height:5px;display:block;accent-color:var(--accent);border:0}.busy progress::-webkit-progress-bar{background:#e1e5ed;border-radius:5px}.busy progress::-webkit-progress-value{background:var(--accent);border-radius:5px}
+.explorer{gap:14px}.explorer-intro{font-size:13px;color:var(--muted);line-height:1.5;margin:0}.swatch-space{display:flex;align-items:center;justify-content:center;flex:1;min-height:80px;max-height:290px}.swatch{width:min(100%,29dvh);aspect-ratio:1;border-radius:11px;border:1px solid #0000000a;background:#f1f1f4;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:inset 0 0 0 1px #ffffff15;transition:background-color .08s}.swatch-placeholder{text-align:center;color:#94949e;font-size:13px;line-height:1.65;padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px}.swatch-placeholder svg{width:26px;height:26px}.swatch-placeholder[hidden]{display:none}.sample-info{display:flex;flex-direction:column;gap:10px}.hex-display{font-size:26px;line-height:1.2;letter-spacing:-.6px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:500}.copy{border:1px solid var(--line);border-radius:7px;padding:7px;background:#fff}.copy:hover:not(:disabled){background:#f5f5f7}.copy svg{width:17px;height:17px}.data-row{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;color:var(--muted)}.data-row output{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#41414a;font-size:12px}.source-tag{display:inline-block;align-self:flex-start;font-size:12px;background:#f2f2f5;color:#656570;border-radius:5px;padding:5px 7px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.export{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:17px;border-top:1px solid var(--line)}.export .hint{text-align:center}.export .btn{width:100%}.export-secondary{font-size:13px}.mobile-tool{display:none}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:20;background:#242427;color:#fff;max-width:min(90vw,520px);padding:12px 18px;border-radius:9px;box-shadow:0 5px 25px #0002;font-size:14px}.toast[hidden]{display:none}.close-panel{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}noscript{display:block;padding:20px;background:#fff0e8}
+@media(max-width:1150px){.workspace{grid-template-columns:224px minmax(0,1fr) 230px;padding:12px;gap:10px}.editor,.explorer{padding:15px;gap:13px}.stage{padding:18px}.topbar{padding:0 16px;gap:18px}.local{display:none}.control-section{padding-top:14px}.section-head{margin-bottom:11px}.image-toolbar{padding:0 10px}.explorer-intro{font-size:12px}.hex-display{font-size:24px}.swatch{width:min(100%,27dvh)}}
+@media(max-height:820px){.topbar{height:56px}.workspace{padding:10px;gap:10px}.editor,.explorer{padding:14px;gap:11px}.control-section{padding-top:10px}.section-head{margin-bottom:8px}fieldset{gap:8px}.palette-section .palette{margin-top:7px!important}.control-section .hint{margin-top:6px!important}.group-grid{gap:8px}.editor-foot{padding-top:7px}.export{padding-top:12px;gap:6px}.image-toolbar{height:49px}.swatch{width:min(100%,26dvh)}.palette{height:18px}.export-secondary{min-height:24px}.explorer-intro{font-size:12px}}
+@media(max-height:680px){.control-tabs.segmented{display:flex;flex-shrink:0}.control-tabs button{flex:1}.control-section{padding-top:0;border:0}.editor[data-tab=palette] .grid-section{display:none}.editor[data-tab=grid] .palette-section{display:none}.editor-foot{padding-top:5px}.explorer-intro{display:none}.explorer{gap:8px}.swatch{width:min(100%,26dvh)}.sample-info{gap:6px}.export{padding-top:7px;gap:3px}.image-footer{height:30px}.hex-display{font-size:21px}.source-tag{padding:3px 6px}.topbar{height:50px}.stage{padding:12px}.palette-section .hint{margin-top:3px}}
+@media(max-width:790px){.workspace{grid-template-columns:minmax(0,1fr);position:relative;padding:8px}.editor,.explorer{position:absolute;top:8px;bottom:8px;width:min(284px,calc(100% - 32px));z-index:5;box-shadow:0 8px 40px #0002;display:none}.editor{left:8px}.explorer{right:8px}.workspace[data-drawer=editor] .editor,.workspace[data-drawer=explorer] .explorer{display:flex}.image-panel{grid-column:1;grid-row:1}.close-panel{display:inline-flex}.mobile-tool{display:inline-flex;border:0;background:transparent;font-size:13px;padding:6px;gap:5px;align-items:center;border-radius:5px}.mobile-tool[aria-expanded=true]{background:var(--pale);color:var(--accent)}.fit-label{display:none}.topbar{gap:10px;padding:0 12px;height:56px}.brand{gap:8px}h1{font-size:17px}.file-meta{justify-content:flex-end;font-size:12px}.file-name{display:none}.dimensions{font-size:11px}.image-toolbar{height:48px}.segmented button{padding:5px 8px;font-size:12px}.stage{padding:14px}.image-footer{padding:0 10px}.swatch{width:min(100%,28dvh)}.control-tabs.segmented{display:flex}.control-tabs button{flex:1}.control-section{padding-top:3px;border:0}.editor[data-tab=palette] .grid-section{display:none}.editor[data-tab=grid] .palette-section{display:none}.editor-foot{margin-top:auto}.empty{max-width:250px}.empty h2{font-size:19px}.image-footer .keyboard-hint{display:none}.eyebrow{font-size:11px}.explorer-intro{display:block}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.palette button[aria-pressed=true]{box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 3px #242427}
+.palette-return{border:0;padding:0;background:none;color:var(--accent);font:inherit;text-decoration:underline;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<noscript>Activa JavaScript en tu navegador para abrir imágenes y aplicar los filtros.</noscript>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><h1>Estudio de color</h1></div>
+    <div class="file-meta"><span id="fileName" class="file-name">Sin imagen</span><span id="dimensions" class="dimensions"></span></div>
+    <span class="local"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M7 11V7a5 5 0 0 1 10 0v4"/><rect x="4" y="11" width="16" height="11" rx="3"/></svg>Solo en tu navegador</span>
+  </header>
+  <main class="workspace" id="workspace">
+    <aside class="panel editor" id="editor" data-tab="palette" aria-label="Opciones de edición">
+      <div class="panel-title"><h2>Edición</h2><button class="btn text close-panel" data-close aria-label="Cerrar opciones">Cerrar</button></div>
+      <button id="openFile" class="btn soft open-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M12 11v6m-3-3h6"/></svg>Abrir imagen</button>
+      <input id="fileInput" type="file" accept="image/*" class="sr-only" tabindex="-1" aria-label="Seleccionar imagen">
+      <div class="control-tabs segmented" aria-label="Tipo de ajuste"><button data-control-tab="palette" aria-pressed="true">Paleta</button><button data-control-tab="grid" aria-pressed="false">Cuadrícula</button></div>
+      <section class="control-section palette-section">
+        <div class="section-head"><label class="toggle" for="reduceEnabled"><span>Reducir colores</span><input id="reduceEnabled" type="checkbox" checked disabled></label></div>
+        <fieldset id="paletteControls" disabled>
+          <div class="row"><label for="colorCount">Número de colores</label><input id="colorCount" class="number" type="number" min="2" max="64" step="1" value="4"></div>
+          <input id="colorRange" class="range" type="range" min="2" max="64" value="4" aria-label="Número de colores">
+          <div class="presets" aria-label="Cantidades frecuentes"><button data-count="2" aria-pressed="false">2</button><button data-count="3" aria-pressed="false">3</button><button data-count="4" aria-pressed="true">4</button><button data-count="6" aria-pressed="false">6</button><button data-count="8" aria-pressed="false">8</button></div>
+        </fieldset>
+        <div id="palette" class="palette" style="margin-top:12px" aria-label="Colores de la paleta"></div>
+        <p class="hint" style="margin-top:9px"><span id="paletteHint">Automático · desde el original.</span><button id="showAllColors" class="palette-return" type="button" hidden>Mostrar todos</button></p>
+      </section>
+      <section class="control-section grid-section">
+        <div class="section-head"><label class="toggle" for="gridEnabled"><span>Cuadrícula</span><input id="gridEnabled" type="checkbox" checked disabled></label></div>
+        <fieldset id="gridControls" class="group-grid" disabled>
+          <div class="two"><div class="field"><label for="gridRows">Filas</label><input id="gridRows" class="number" type="number" min="1" max="100" value="3"></div><div class="field"><label for="gridCols">Columnas</label><input id="gridCols" class="number" type="number" min="1" max="100" value="3"></div></div>
+          <div class="row"><label for="lineWidth">Grosor</label><span><input id="lineWidth" class="number" type="number" min="1" max="40" value="4"> <span class="unit">px</span></span></div>
+          <input id="widthRange" class="range" type="range" min="1" max="40" value="4" aria-label="Grosor de la cuadrícula">
+          <div class="field"><label for="gridColor">Color de línea</label><div class="color-row"><input id="gridColor" class="color-input" type="color" value="#ed3345" aria-label="Elegir color de cuadrícula"><input id="gridHex" class="hex-input" type="text" value="#ED3345" maxlength="7" spellcheck="false" aria-label="Color hexadecimal de cuadrícula"></div></div>
+        </fieldset>
+        <p id="gridHint" class="hint" style="margin-top:9px">3 × 3 · 9 celdas. Grosor en píxeles originales.</p>
+      </section>
+      <div class="editor-foot"><button id="reset" class="btn text" disabled>Restablecer ajustes</button></div>
+    </aside>
+    <section class="panel image-panel" aria-label="Imagen">
+      <div class="image-toolbar">
+        <button class="mobile-tool" id="showEditor" aria-expanded="false" aria-controls="editor"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="3" fill="white"/><circle cx="16" cy="17" r="3" fill="white"/></svg>Ajustes</button>
+        <div class="segmented" aria-label="Vista de imagen"><button id="viewOriginal" aria-pressed="false" disabled>Original</button><button id="viewResult" aria-pressed="true" disabled>Resultado</button></div>
+        <span id="fitLabel" class="fit-label">Ajustar a pantalla</span>
+        <button class="mobile-tool" id="showExplorer" aria-expanded="false" aria-controls="explorer">Color<svg class="icon" viewBox="0 0 24 24"><path d="m14 5 5 5M12 7 4 15v5h5l8-8M14 5l2-2a2 2 0 0 1 3 0l2 2a2 2 0 0 1 0 3l-2 2"/></svg></button>
+      </div>
+      <div id="stage" class="stage">
+        <div class="empty" id="empty">
+          <div class="empty-symbol"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/></svg></div>
+          <div><h2>Tu imagen, en pocos colores</h2><p style="margin-top:9px">Arrastra una imagen aquí<br>o selecciónala desde tu equipo.</p></div>
+          <button id="emptyOpen" class="btn primary">Seleccionar imagen</button>
+          <p class="hint">PNG, JPG, WebP y otros formatos del navegador.</p>
+        </div>
+        <div id="imageWrap" class="image-wrap" hidden>
+          <canvas id="preview" tabindex="0" aria-label="Imagen. Haz clic para explorar un píxel o usa las flechas del teclado."></canvas>
+          <svg id="gridOverlay" class="grid-overlay" aria-hidden="true" preserveAspectRatio="none"></svg>
+          <div id="sampleMark" class="sample-mark" hidden></div>
+        </div>
+        <div id="busy" class="busy" hidden role="status"><div class="busy-row"><span id="busyText">Buscando la paleta…</span><span id="busyPercent">0%</span></div><progress id="progress" max="100" value="0"></progress></div>
+      </div>
+      <div class="image-footer"><span id="viewStatus">Carga una imagen para comenzar</span><span id="pixelPosition" class="keyboard-hint">Clic para explorar un color</span></div>
+    </section>
+    <aside class="panel explorer" id="explorer" aria-label="Explorador de color">
+      <div class="panel-title"><div><p class="eyebrow">Píxel a píxel</p><h2>Explorar color</h2></div><button class="btn text close-panel" data-close aria-label="Cerrar explorador">Cerrar</button></div>
+      <p class="explorer-intro">Haz clic en la imagen para ver su color aislado. La cuadrícula no afecta la muestra.</p>
+      <div class="swatch-space"><div id="swatch" class="swatch"><span id="swatchPlaceholder" class="swatch-placeholder"><svg class="icon" viewBox="0 0 24 24"><path d="m14 5 5 5M12 7 4 15v5h5l8-8M14 5l2-2a2 2 0 0 1 3 0l2 2a2 2 0 0 1 0 3l-2 2"/></svg>Selecciona un píxel</span></div></div>
+      <div class="sample-info" aria-live="polite" aria-atomic="true">
+        <div class="row"><output id="hexDisplay" class="hex-display">—</output><button id="copyColor" class="copy" aria-label="Copiar color hexadecimal" title="Copiar HEX" disabled><svg class="icon" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg></button></div>
+        <div class="data-row"><span>RGB</span><output id="rgbDisplay">—</output></div>
+        <div class="data-row"><span>Opacidad</span><output id="alphaDisplay">—</output></div>
+        <span id="sampleSource" class="source-tag">Sin muestra</span>
+      </div>
+      <div class="export">
+        <button id="download" class="btn primary" disabled><svg class="icon" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg>Descargar PNG</button>
+        <button id="downloadClean" class="btn text export-secondary" disabled>Descargar sin cuadrícula</button>
+        <p id="exportHint" class="hint">Se conservan las dimensiones originales.</p>
+      </div>
+    </aside>
+  </main>
+</div>
+<div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+<script>
+'use strict';
+
+// Two-stage automatic palette: broad OKLab candidates, then weighted coverage.
+// Representatives are real source colors near a local density peak (approximate mode).
+// The source RGBA buffer stays read-only; overlays never enter this pipeline.
+function createQuantizer(yieldTask) {
+  const linear=new Float64Array(256);
+  for(let i=0;i<256;i++){const c=i/255;linear[i]=c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4);}
+  function lab(r,g,b){
+    r=linear[r];g=linear[g];b=linear[b];
+    const l=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b);
+    const m=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b);
+    const s=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
+    const a=1.9779984951*l-2.428592205*m+.4505937099*s;
+    const bb=.0259040371*l+.7827717662*m-.808675766*s;
+    return [.2104542553*l+.793617785*m-.0040720468*s,a,bb,Math.hypot(a,bb)];
+  }
+  function distance(a,b){const x=a[0]-b[0],y=a[1]-b[1],z=a[2]-b[2];return x*x+y*y+z*z;}
+  function paletteDistance(a,b){
+    // Use one lightness weight across all comparisons, so a gray background
+    // cannot gain priority simply by being neutral. Grayscale images still
+    // retain tonal differences because lightness is their only varying axis.
+    const lightnessWeight=.16;
+    const l=a[0]-b[0],aa=a[1]-b[1],bb=a[2]-b[2];
+    // The chromatic squared difference separates into chroma and hue terms.
+    // This avoids angles and circular discontinuities; the hue term vanishes
+    // naturally at zero chroma. Extra hue weight favors distinct color families.
+    const dc=a[3]-b[3],huePart=Math.max(0,aa*aa+bb*bb-dc*dc);
+    return lightnessWeight*l*l+dc*dc+6*huePart;
+  }
+  function nearest(point,centers,metric=distance){let best=0,dmin=Infinity;for(let j=0;j<centers.length;j++){const d=metric(point,centers[j]);if(d<dmin){best=j;dmin=d;}}return best;}
+  function modalColor(members){
+    const bins=new Map();
+    for(const s of members){
+      const cell=[Math.floor(s.lab[0]/.035),Math.floor(s.lab[1]/.025),Math.floor(s.lab[2]/.025)],key=cell.join(',');let bin=bins.get(key);
+      if(!bin){bin={cell,weight:0,sum:[0,0,0],members:[]};bins.set(key,bin);}
+      bin.weight+=s.weight;for(let c=0;c<3;c++)bin.sum[c]+=s.lab[c]*s.weight;bin.members.push(s);
+    }
+    // Smooth local density across neighboring cells instead of counting exact RGBs.
+    let peak=null,density=-1;
+    for(const bin of bins.values()){
+      let score=0;const [l,a,b]=bin.cell;
+      for(let dl=-1;dl<=1;dl++)for(let da=-1;da<=1;da++)for(let db=-1;db<=1;db++){
+        const neighbor=bins.get([l+dl,a+da,b+db].join(','));
+        if(neighbor)score+=neighbor.weight/(1+2*(Math.abs(dl)+Math.abs(da)+Math.abs(db)));
+      }
+      if(score>density){density=score;peak=bin;}
+    }
+    const center=peak.sum.map(v=>v/peak.weight);let representative=peak.members[0],best=Infinity;
+    for(const s of peak.members){const d=distance(s.lab,center);if(d<best){best=d;representative=s;}}
+    return representative;
+  }
+  return async function quantize(data,k,onProgress,width=0){
+    let seed=917431;const rand=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return (seed>>>0)/4294967296;};
+    const total=data.length/4,height=width?total/width:0,sampleSize=Math.min(total,24000),hist=new Map();
+    function coherence(p,color){
+      if(!width)return 1;
+      const index=p/4,x=index%width,y=Math.floor(index/width);let agree=0,n=0;
+      const neighbors=[];if(x>0)neighbors.push(p-4);if(x+1<width)neighbors.push(p+4);if(y>0)neighbors.push(p-width*4);if(y+1<height)neighbors.push(p+width*4);
+      for(const q of neighbors){if(!data[q+3])continue;const delta=distance(color,lab(data[q],data[q+1],data[q+2]));agree+=Math.max(0,1-delta/.0036);n++;}
+      return n?agree/n:1;
+    }
+    function add(p){
+      const alpha=data[p+3];if(!alpha)return;
+      const key=(data[p]<<16)|(data[p+1]<<8)|data[p+2],w=alpha/255;let item=hist.get(key);
+      if(!item){const rgb=[data[p],data[p+1],data[p+2]];item={key,rgb,lab:lab(...rgb),weight:0,support:0};hist.set(key,item);}
+      item.weight+=w;item.support+=w*coherence(p,item.lab);
+    }
+    for(let i=0;i<sampleSize;i++){add(Math.min(total-1,Math.floor((i+rand())*total/sampleSize))*4);if(i&&i%4096===0)await yieldTask();}
+    // Discover rare colors in small/sparse images; never invent extra colors.
+    if(hist.size<k)for(let p=0;p<data.length&&hist.size<k;p+=4){add(p);if(p%1048576===0)await yieldTask();}
+    const samples=Array.from(hist.values());
+    if(!samples.length)return {data:new Uint8ClampedArray(data),palette:[],counts:[]};
+    k=Math.min(k,samples.length);onProgress(5,'Analizando familias de color…');await yieldTask();
+    let palette;
+    if(samples.length<=k){palette=samples.map(s=>s.rgb);}
+    else{
+      const m=Math.min(samples.length,Math.max(32,Math.min(128,k*4)));
+      let first=0;for(let i=1;i<samples.length;i++)if(samples[i].weight>samples[first].weight)first=i;
+      const centers=[samples[first].lab.slice()],minDist=new Float64Array(samples.length).fill(Infinity);
+      for(let c=1;c<m;c++){
+        let sum=0;for(let i=0;i<samples.length;i++){minDist[i]=Math.min(minDist[i],distance(samples[i].lab,centers[c-1]));sum+=minDist[i]*samples[i].weight;}
+        let target=rand()*sum,chosen=samples.length-1;
+        for(let i=0;i<samples.length;i++){target-=minDist[i]*samples[i].weight;if(target<=0){chosen=i;break;}}
+        centers.push(samples[chosen].lab.slice());if(c%8===0)await yieldTask();
+      }
+      const assignment=new Int16Array(samples.length).fill(-1),errors=new Float64Array(samples.length);
+      for(let iteration=0;iteration<22;iteration++){
+        const sums=Array.from({length:m},()=>[0,0,0,0]);let changes=0,reseeded=false;
+        for(let i=0;i<samples.length;i++){
+          const s=samples[i],j=nearest(s.lab,centers);if(assignment[i]!==j)changes++;assignment[i]=j;
+          errors[i]=distance(s.lab,centers[j])*s.weight;const sum=sums[j];
+          sum[0]+=s.lab[0]*s.weight;sum[1]+=s.lab[1]*s.weight;sum[2]+=s.lab[2]*s.weight;sum[3]+=s.weight;
+        }
+        for(let j=0;j<m;j++){
+          if(sums[j][3]){const c=sums[j].slice(0,3).map(v=>v/sums[j][3]);c.push(Math.hypot(c[1],c[2]));centers[j]=c;}
+          else{let index=0;for(let i=1;i<errors.length;i++)if(errors[i]>errors[index])index=i;centers[j]=samples[index].lab.slice();errors[index]=0;reseeded=true;}
+        }
+        onProgress(7+Math.round(25*(iteration+1)/22),'Analizando familias de color…');await yieldTask();
+        if(!changes&&!reseeded)break;
+      }
+      const groups=Array.from({length:m},()=>({members:[],weight:0,support:0}));
+      for(const s of samples){
+        const g=groups[nearest(s.lab,centers)];g.members.push(s);g.weight+=s.weight;g.support+=s.support;
+      }
+      const candidates=[];
+      for(const g of groups){
+        if(!g.members.length)continue;
+        const representative=modalColor(g.members);
+        candidates.push({sample:representative,weight:Math.sqrt(g.weight)*(.10+.90*g.support/g.weight)});
+      }
+      // Empty candidate groups must never reduce the user's requested palette size.
+      if(candidates.length<k){const keys=new Set(candidates.map(c=>c.sample.key));for(const s of samples){if(!keys.has(s.key)){candidates.push({sample:s,weight:Math.sqrt(s.weight)*(.1+.9*s.support/s.weight)});keys.add(s.key);}if(candidates.length>=k)break;}}
+      onProgress(34,'Equilibrando la paleta…');await yieldTask();
+      const n=candidates.length,distances=Array.from({length:n},()=>new Float64Array(n));
+      for(let i=0;i<n;i++)for(let j=0;j<n;j++)distances[i][j]=paletteDistance(candidates[i].sample.lab,candidates[j].sample.lab);
+      const selected=[],chosen=new Set(),current=new Float64Array(n).fill(Infinity);
+      // Greedy coverage, followed by bounded medoid swaps. The final colors remain
+      // existing candidates, rather than drifting back to population-dominated means.
+      for(let slot=0;slot<k;slot++){
+        let winner=-1,bestCost=Infinity;
+        for(let j=0;j<n;j++)if(!chosen.has(j)){
+          let cost=0;for(let i=0;i<n;i++)cost+=candidates[i].weight*Math.min(current[i],distances[i][j]);
+          if(cost<bestCost){winner=j;bestCost=cost;}
+        }
+        selected.push(winner);chosen.add(winner);for(let i=0;i<n;i++)current[i]=Math.min(current[i],distances[i][winner]);
+        if(slot%8===0)await yieldTask();
+      }
+      for(let pass=0;pass<6;pass++){
+        const nearestSlot=new Int16Array(n),bestDist=new Float64Array(n),secondDist=new Float64Array(n);
+        for(let i=0;i<n;i++){
+          let best=Infinity,second=Infinity,slot=0;
+          for(let s=0;s<k;s++){const d=distances[i][selected[s]];if(d<best){second=best;best=d;slot=s;}else if(d<second)second=d;}
+          nearestSlot[i]=slot;bestDist[i]=best;secondDist[i]=second;
+        }
+        let bestDelta=-1e-12,replaceSlot=-1,replacement=-1;
+        for(let j=0;j<n;j++)if(!chosen.has(j))for(let s=0;s<k;s++){
+          let delta=0;for(let i=0;i<n;i++){const retained=nearestSlot[i]===s?secondDist[i]:bestDist[i];delta+=candidates[i].weight*(Math.min(retained,distances[i][j])-bestDist[i]);}
+          if(delta<bestDelta){bestDelta=delta;replaceSlot=s;replacement=j;}
+        }
+        if(replaceSlot<0)break;
+        chosen.delete(selected[replaceSlot]);chosen.add(replacement);selected[replaceSlot]=replacement;await yieldTask();
+      }
+      palette=selected.map(i=>candidates[i].sample.rgb);
+      // Choose the actual tone of each retained family from its dominant local
+      // color population, rather than the mean/medoid between highlights and shadows.
+      const paletteLabs=palette.map(c=>lab(...c)),families=Array.from({length:k},()=>[]);
+      for(const s of samples)families[nearest(s.lab,paletteLabs,paletteDistance)].push(s);
+      palette=families.map((members,i)=>members.length?modalColor(members).rgb:palette[i]);
+    }
+    palette.sort((a,b)=>lab(...a)[0]-lab(...b)[0]);
+    const centers=palette.map(c=>lab(...c)),lookup=new Uint8Array(1<<24),counts=new Array(palette.length).fill(0),output=new Uint8ClampedArray(data.length);
+    palette.forEach((c,i)=>{lookup[(c[0]<<16)|(c[1]<<8)|c[2]]=i+1;});
+    // Remap every original pixel with the same lightness/chroma criterion.
+    for(let start=0;start<data.length;start+=524288){
+      const end=Math.min(start+524288,data.length);
+      for(let p=start;p<end;p+=4){
+        const alpha=data[p+3];if(!alpha)continue;
+        const key=(data[p]<<16)|(data[p+1]<<8)|data[p+2];let cached=lookup[key];
+        if(!cached){cached=nearest(lab(data[p],data[p+1],data[p+2]),centers,paletteDistance)+1;lookup[key]=cached;}
+        const j=cached-1,c=palette[j];output[p]=c[0];output[p+1]=c[1];output[p+2]=c[2];output[p+3]=alpha;counts[j]++;
+      }
+      onProgress(45+Math.round(55*end/data.length),'Aplicando al tamaño original…');await yieldTask();
+    }
+    return {data:output,palette,counts};
+  };
+}
+
+
+(()=>{
+const $=id=>document.getElementById(id);
+const state={original:null,result:null,width:0,height:0,name:'imagen',view:'result',busy:false,job:0,worker:null,timer:null,loadId:0,palette:[],point:null,selectedHex:null,isolatedColor:null,isolatedPixels:null,grid:{rows:3,cols:3,width:4,color:'#ed3345'},k:4,exporting:false};
+const preview=$('preview'),ctx=preview.getContext('2d'),SVG='http://www.w3.org/2000/svg';
+let workerURL=null,toastTimer=null;
+function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,5000);}
+function clampInput(el,min,max,fallback){const n=Number(el.value);const result=Math.max(min,Math.min(max,Math.round(Number.isFinite(n)&&el.value!==''?n:fallback)));el.value=result;return result;}
+function hex(rgb){return '#'+rgb.slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();}
+function activePixels(){return state.view==='original'||!$('reduceEnabled').checked?state.original:(state.result||state.original);}
+function resultPixels(){return $('reduceEnabled').checked?(state.result||state.original):state.original;}
+function setDrawer(name){$('workspace').dataset.drawer=$('workspace').dataset.drawer===name?'':name;syncDrawer();}
+function closeDrawer(){$('workspace').dataset.drawer='';syncDrawer();}
+function syncDrawer(){for(const [id,name]of[['showEditor','editor'],['showExplorer','explorer']])$(id).setAttribute('aria-expanded',String($('workspace').dataset.drawer===name));}
+function syncControls(){
+ const loaded=!!state.original;
+ for(const id of ['reduceEnabled','gridEnabled','viewOriginal','viewResult','reset'])$(id).disabled=!loaded;
+ $('paletteControls').disabled=!loaded||!$('reduceEnabled').checked;$('gridControls').disabled=!loaded||!$('gridEnabled').checked;
+ $('download').disabled=$('downloadClean').disabled=!loaded||state.busy||state.exporting;
+ $('downloadClean').hidden=!$('gridEnabled').checked;
+ $('gridHint').textContent=`${state.grid.rows} × ${state.grid.cols} · ${state.grid.rows*state.grid.cols} celdas. Grosor en píxeles originales.`;
+ $('viewOriginal').setAttribute('aria-pressed',String(state.view==='original'));$('viewResult').setAttribute('aria-pressed',String(state.view==='result'));
+ document.querySelectorAll('[data-count]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.count===state.k)));
+ $('exportHint').textContent=loaded?`${state.width} × ${state.height} px · ${$('gridEnabled').checked?'con cuadrícula':'sin cuadrícula'}`:'Se conservan las dimensiones originales.';
+}
+function fit(){
+ if(!state.original)return;
+ const stage=$('stage'),css=getComputedStyle(stage),w=Math.max(1,stage.clientWidth-parseFloat(css.paddingLeft)-parseFloat(css.paddingRight)),h=Math.max(1,stage.clientHeight-parseFloat(css.paddingTop)-parseFloat(css.paddingBottom));
+ const scale=Math.min(w/state.width,h/state.height,1);
+ $('imageWrap').style.width=(state.width*scale)+'px';$('imageWrap').style.height=(state.height*scale)+'px';
+ $('fitLabel').textContent=`Vista ${Math.round(scale*100)}%`;
+}
+function gridRects(){
+ const {width:w,height:h,grid:g}=state,rects=[];
+ for(let i=1;i<g.cols;i++){const x=Math.max(0,Math.round(i*w/g.cols)-Math.floor(g.width/2));rects.push([x,0,Math.min(g.width,w-x),h]);}
+ for(let i=1;i<g.rows;i++){const y=Math.max(0,Math.round(i*h/g.rows)-Math.floor(g.width/2));rects.push([0,y,w,Math.min(g.width,h-y)]);}
+ return rects;
+}
+function drawGrid(){
+ const overlay=$('gridOverlay');overlay.replaceChildren();
+ if(!state.original||!$('gridEnabled').checked||state.view==='original')return;
+ overlay.setAttribute('viewBox',`0 0 ${state.width} ${state.height}`);
+ for(const [x,y,w,h]of gridRects()){const rect=document.createElementNS(SVG,'rect');for(const [key,v]of Object.entries({x,y,width:w,height:h,fill:state.grid.color}))rect.setAttribute(key,v);overlay.append(rect);}
+}
+function render(){
+ if(!state.original)return;
+ if(preview.width!==state.width||preview.height!==state.height){preview.width=state.width;preview.height=state.height;}
+ ctx.putImageData(state.view==='result'&&state.result&&state.isolatedPixels?state.isolatedPixels:activePixels(),0,0);drawGrid();fit();
+ $('viewStatus').textContent=state.view==='original'?'Original · sin filtros':state.busy?'Preparando resultado…':state.isolatedColor?`Solo ${hex(state.isolatedColor)}`:$('reduceEnabled').checked?`${state.palette.length} colores · automático`:'Colores originales · resultado';
+ if(state.point)selectPixel(state.point.x,state.point.y,false);
+}
+function renderPalette(){
+ $('palette').replaceChildren();
+ if(!$('reduceEnabled').checked){$('paletteHint').textContent='Colores originales, sin reducción.';syncColorIsolation();return;}
+ state.palette.forEach(c=>{const b=document.createElement('button');b.style.setProperty('--color',hex(c));b.dataset.color=hex(c);b.title='Ver solo '+hex(c)+' · otro clic muestra todos';b.setAttribute('aria-label','Ver solo '+hex(c));b.addEventListener('click',()=>selectPaletteColor(c));$('palette').append(b);});
+ $('paletteHint').textContent=state.palette.length&&state.palette.length<state.k?`La imagen tiene ${state.palette.length} colores visibles disponibles.`:'Automático · desde el original.';
+ syncColorIsolation();
+}
+function syncColorIsolation(){
+ const selected=state.isolatedColor?hex(state.isolatedColor):null;
+ $('showAllColors').hidden=!selected;$('paletteHint').hidden=!!selected;
+ for(const b of $('palette').children)b.setAttribute('aria-pressed',String(b.dataset.color===selected));
+}
+function clearColorIsolation(){state.isolatedColor=null;state.isolatedPixels=null;syncColorIsolation();}
+function selectPaletteColor(color){
+ if(!state.result||state.busy)return;
+ state.point=null;$('sampleMark').hidden=true;
+ if(state.isolatedColor&&hex(state.isolatedColor)===hex(color))clearColorIsolation();
+ else{
+   // Mask a preview copy only. Quantization, sampling and exports keep their source pixels.
+   const data=new Uint8ClampedArray(state.result.data),[r,g,b]=color;
+   for(let p=0;p<data.length;p+=4)if(data[p]!==r||data[p+1]!==g||data[p+2]!==b)data.fill(0,p,p+4);
+   state.isolatedColor=color;state.isolatedPixels=new ImageData(data,state.width,state.height);
+ }
+ state.view='result';syncControls();syncColorIsolation();render();
+ showColor([...color,255],'Color de la paleta');closeDrawer();
+}
+function showColor(rgba,source){
+ const [r,g,b,a]=rgba,value=hex(rgba);state.selectedHex=a?value:null;
+ $('swatchPlaceholder').hidden=true;$('swatch').style.background=a?value:'repeating-conic-gradient(#eee 0% 25%,#fff 0% 50%) 0/20px 20px';
+ $('hexDisplay').textContent=a?value:'—';$('rgbDisplay').textContent=a?`${r}, ${g}, ${b}`:'Transparente';$('alphaDisplay').textContent=Math.round(a/255*100)+'%';$('sampleSource').textContent=source;$('copyColor').disabled=!a;
+}
+function selectPixel(x,y,openMobile=true){
+ if(!state.original)return;
+ x=Math.max(0,Math.min(state.width-1,Math.floor(x)));y=Math.max(0,Math.min(state.height-1,Math.floor(y)));state.point={x,y};
+ const p=(y*state.width+x)*4,pixels=activePixels().data;
+ const source=state.view==='original'?'Original':$('reduceEnabled').checked&&!state.busy?'Resultado':'Colores originales';
+ showColor(Array.from(pixels.subarray(p,p+4)),`${source} · (${x}, ${y})`);
+ $('sampleMark').hidden=false;$('sampleMark').style.left=((x+.5)/state.width*100)+'%';$('sampleMark').style.top=((y+.5)/state.height*100)+'%';$('pixelPosition').textContent=`X ${x} · Y ${y}`;
+ if(openMobile&&matchMedia('(max-width:790px)').matches){$('workspace').dataset.drawer='explorer';syncDrawer();}
+}
+function clearSample(){state.point=null;state.selectedHex=null;$('swatchPlaceholder').hidden=false;$('swatch').style.background='';$('sampleMark').hidden=true;$('hexDisplay').textContent='—';$('rgbDisplay').textContent='—';$('alphaDisplay').textContent='—';$('sampleSource').textContent='Sin muestra';$('copyColor').disabled=true;$('pixelPosition').textContent='Clic para explorar un color';}
+function setBusy(b){state.busy=b;$('busy').hidden=!b;$('stage').setAttribute('aria-busy',String(b));syncControls();}
+function progress(n,message){$('progress').value=n;$('busyPercent').textContent=n+'%';$('busyText').textContent=message;}
+function cancelJob(){clearTimeout(state.timer);state.timer=null;state.job++;if(state.worker){state.worker.terminate();state.worker=null;}}
+async function reduceNow(){
+ cancelJob();if(!state.original||!$('reduceEnabled').checked)return;
+ const id=state.job;setBusy(true);progress(0,'Buscando la paleta…');
+ const finish=result=>{if(id!==state.job)return;state.result=new ImageData(new Uint8ClampedArray(result.data),state.width,state.height);state.palette=result.palette;setBusy(false);renderPalette();render();if(state.worker){state.worker.terminate();state.worker=null;}};
+ const fail=error=>{if(id!==state.job)return;setBusy(false);$('reduceEnabled').checked=false;state.result=null;state.palette=[];renderPalette();syncControls();render();toast('No se pudo reducir la imagen. Puedes desactivar el filtro o intentarlo con menos colores.');console.warn('Reducción:',error);};
+ const fallback=async()=>{try{const engine=createQuantizer(async()=>{await new Promise(r=>setTimeout(r,0));if(id!==state.job)throw new Error('cancelled');});finish(await engine(state.original.data,state.k,(n,m)=>{if(id===state.job)progress(n,m);},state.width));}catch(e){if(id===state.job)fail(e);}};
+ try{
+   if(!workerURL){const code=`'use strict';const createQuantizer=${createQuantizer.toString()};self.onmessage=async(e)=>{try{const engine=createQuantizer(()=>Promise.resolve());const result=await engine(new Uint8ClampedArray(e.data.buffer),e.data.k,(n,message)=>self.postMessage({type:'progress',n,message}),e.data.width);self.postMessage({type:'done',buffer:result.data.buffer,palette:result.palette,counts:result.counts},[result.data.buffer]);}catch(error){self.postMessage({type:'error',message:error.message});}};`;workerURL=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));}
+   const worker=new Worker(workerURL);state.worker=worker;
+   worker.onmessage=e=>{if(id!==state.job)return;const m=e.data;if(m.type==='progress')progress(m.n,m.message);else if(m.type==='done')finish({data:m.buffer,palette:m.palette});else{worker.terminate();state.worker=null;fallback();}};
+   worker.onerror=e=>{e.preventDefault();worker.terminate();if(id===state.job){state.worker=null;fallback();}};
+   const copy=state.original.data.slice();worker.postMessage({buffer:copy.buffer,k:state.k,width:state.width},[copy.buffer]);
+ }catch(e){fallback();}
+}
+function scheduleReduction(){
+ cancelJob();clearColorIsolation();state.result=null;state.palette=[];renderPalette();
+ if(!$('reduceEnabled').checked||!state.original){setBusy(false);render();return;}
+ setBusy(true);progress(0,'Buscando la paleta…');render();state.timer=setTimeout(reduceNow,160);
+}
+async function loadFile(file){
+ if(!file)return;
+ if(file.type&&!file.type.startsWith('image/')){toast('Selecciona un archivo de imagen.');return;}
+ const loadId=++state.loadId;let url;
+ try{
+   url=URL.createObjectURL(file);const img=new Image();img.src=url;await img.decode();if(loadId!==state.loadId)return;
+   const w=img.naturalWidth,h=img.naturalHeight;if(!w||!h)throw new Error('Sin dimensiones');
+   const scratch=document.createElement('canvas');scratch.width=w;scratch.height=h;const c=scratch.getContext('2d',{willReadFrequently:true});c.drawImage(img,0,0);const original=c.getImageData(0,0,w,h);scratch.width=scratch.height=0;
+   cancelJob();state.original=original;state.width=w;state.height=h;state.name=file.name.replace(/\.[^.]+$/,'')||'imagen';state.result=null;state.palette=[];state.view='result';
+   $('fileName').textContent=file.name;$('fileName').title=file.name;$('dimensions').textContent=`${w} × ${h} px`;$('empty').hidden=true;$('imageWrap').hidden=false;
+   clearSample();syncControls();render();closeDrawer();scheduleReduction();
+ }catch(e){toast('No se pudo abrir esa imagen. Prueba con un PNG, JPG o WebP compatible con tu navegador.');}
+ finally{if(url)URL.revokeObjectURL(url);$('fileInput').value='';}
+}
+function updateCount(value){state.k=Math.max(2,Math.min(64,Math.round(value)||4));$('colorCount').value=$('colorRange').value=state.k;syncControls();if(state.original&&$('reduceEnabled').checked)scheduleReduction();}
+function updateGrid(){state.grid.rows=clampInput($('gridRows'),1,100,3);state.grid.cols=clampInput($('gridCols'),1,100,3);state.grid.width=clampInput($('lineWidth'),1,40,4);$('widthRange').value=state.grid.width;syncControls();drawGrid();}
+function setGridColor(color){state.grid.color=color.toLowerCase();$('gridColor').value=state.grid.color;$('gridHex').value=color.toUpperCase();drawGrid();}
+async function download(includeGrid){
+ if(!state.original||state.busy||state.exporting)return;
+ state.exporting=true;syncControls();let canvas;
+ try{
+   canvas=document.createElement('canvas');canvas.width=state.width;canvas.height=state.height;const c=canvas.getContext('2d');c.putImageData(resultPixels(),0,0);
+   const withGrid=includeGrid&&$('gridEnabled').checked;if(withGrid){c.fillStyle=state.grid.color;for(const r of gridRects())c.fillRect(...r);}
+   const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG vacío')),'image/png'));
+   const url=URL.createObjectURL(blob),a=document.createElement('a'),base=state.name.replace(/[<>:"/\\|?*\u0000-\u001f]/g,'_');
+   a.href=url;a.download=`${base}_${$('reduceEnabled').checked?state.palette.length+'colores':'original'}${withGrid?'_'+state.grid.rows+'x'+state.grid.cols:''}.png`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+   toast(`PNG listo · ${state.width} × ${state.height} píxeles`);
+ }catch(e){toast('No se pudo descargar el PNG. Inténtalo de nuevo.');}
+ finally{if(canvas)canvas.width=canvas.height=0;state.exporting=false;syncControls();}
+}
+async function copyColor(){if(!state.selectedHex)return;try{await navigator.clipboard.writeText(state.selectedHex);toast('Color copiado: '+state.selectedHex);}catch(e){const t=document.createElement('textarea');t.value=state.selectedHex;t.style.position='fixed';t.style.top='-1000px';document.body.append(t);t.select();const ok=document.execCommand('copy');t.remove();toast(ok?'Color copiado: '+state.selectedHex:'Puedes copiar el código HEX que aparece a la derecha.');}}
+function reset(){state.k=4;state.grid={rows:3,cols:3,width:4,color:'#ed3345'};$('reduceEnabled').checked=$('gridEnabled').checked=true;$('colorCount').value=$('colorRange').value=4;$('gridRows').value=$('gridCols').value=3;$('lineWidth').value=$('widthRange').value=4;setGridColor(state.grid.color);state.view='result';syncControls();scheduleReduction();}
+for(const id of ['openFile','emptyOpen'])$(id).addEventListener('click',()=>$('fileInput').click());
+$('fileInput').addEventListener('change',e=>loadFile(e.target.files[0]));
+$('reduceEnabled').addEventListener('change',()=>{state.view='result';scheduleReduction();});
+$('gridEnabled').addEventListener('change',()=>{syncControls();drawGrid();});
+$('colorCount').addEventListener('change',()=>updateCount(clampInput($('colorCount'),2,64,4)));
+$('colorRange').addEventListener('input',e=>updateCount(+e.target.value));
+document.querySelectorAll('[data-count]').forEach(b=>b.addEventListener('click',()=>updateCount(+b.dataset.count)));
+for(const id of ['gridRows','gridCols','lineWidth'])$(id).addEventListener('change',updateGrid);
+$('widthRange').addEventListener('input',e=>{$('lineWidth').value=e.target.value;updateGrid();});
+$('gridColor').addEventListener('input',e=>setGridColor(e.target.value));
+$('gridHex').addEventListener('change',e=>{let v=e.target.value.trim();if(!v.startsWith('#'))v='#'+v;if(/^#[0-9a-f]{3}$/i.test(v))v='#'+v.slice(1).split('').map(c=>c+c).join('');if(/^#[0-9a-f]{6}$/i.test(v))setGridColor(v);else{e.target.value=state.grid.color.toUpperCase();toast('Usa un color HEX válido, por ejemplo #ED3345.');}});
+$('showAllColors').addEventListener('click',()=>{clearColorIsolation();render();closeDrawer();});
+$('viewOriginal').addEventListener('click',()=>{clearColorIsolation();state.view='original';syncControls();render();});$('viewResult').addEventListener('click',()=>{state.view='result';syncControls();render();});
+preview.addEventListener('pointerdown',e=>{if(e.button!==0)return;const r=preview.getBoundingClientRect();selectPixel((e.clientX-r.left)/r.width*state.width,(e.clientY-r.top)/r.height*state.height);});
+preview.addEventListener('keydown',e=>{const directions={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(!directions[e.key])return;e.preventDefault();const p=state.point||{x:Math.floor(state.width/2),y:Math.floor(state.height/2)},d=directions[e.key],step=e.shiftKey?10:1;selectPixel(p.x+d[0]*step,p.y+d[1]*step,false);});
+$('download').addEventListener('click',()=>download(true));$('downloadClean').addEventListener('click',()=>download(false));$('copyColor').addEventListener('click',copyColor);$('reset').addEventListener('click',reset);
+$('showEditor').addEventListener('click',()=>setDrawer('editor'));$('showExplorer').addEventListener('click',()=>setDrawer('explorer'));document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeDrawer));
+document.querySelectorAll('[data-control-tab]').forEach(b=>b.addEventListener('click',()=>{$('editor').dataset.tab=b.dataset.controlTab;document.querySelectorAll('[data-control-tab]').forEach(t=>t.setAttribute('aria-pressed',String(t===b)));}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+document.addEventListener('dragover',e=>{if(Array.from(e.dataTransfer.types).includes('Files')){e.preventDefault();$('stage').classList.add('drag');}});
+document.addEventListener('dragleave',e=>{if(!e.relatedTarget)$('stage').classList.remove('drag');});
+document.addEventListener('drop',e=>{e.preventDefault();$('stage').classList.remove('drag');if(e.dataTransfer.files.length)loadFile(e.dataTransfer.files[0]);});
+new ResizeObserver(fit).observe($('stage'));window.addEventListener('beforeunload',()=>{cancelJob();if(workerURL)URL.revokeObjectURL(workerURL);});
+syncControls();
+// Optional browser agent integration. Unsupported browsers simply ignore it.
+if(document.modelContext?.registerTool){const lifecycle=new AbortController();try{Promise.resolve(document.modelContext.registerTool({name:'inspect_image_color',title:'Explorar un píxel',description:'Muestra en el explorador el color de un píxel de la vista activa, sin cuadrícula. Coordenadas desde cero.',inputSchema:{type:'object',properties:{x:{type:'integer',minimum:0},y:{type:'integer',minimum:0}},required:['x','y'],additionalProperties:false},annotations:{readOnlyHint:false},execute(input){if(!state.original)throw new Error('Primero abre una imagen.');if(!Number.isInteger(input?.x)||!Number.isInteger(input?.y)||input.x<0||input.y<0||input.x>=state.width||input.y>=state.height)throw new Error('Píxel fuera de la imagen.');selectPixel(input.x,input.y,false);return {x:input.x,y:input.y,hex:state.selectedHex,rgb:$('rgbDisplay').textContent,source:state.view};}},{signal:lifecycle.signal})).catch(()=>{});window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});}catch(e){}}
+})();
+</script>
+</body>
+</html>
